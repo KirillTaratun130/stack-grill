@@ -21,11 +21,29 @@ cp packages/db/.env.example packages/db/.env
 
 ```dotenv
 # packages/db/.env
-DATABASE_URL="postgresql://USER:PASSWORD@localhost:5432/stack_grill?schema=public"
+DATABASE_URL="postgresql://postgres:postgres@localhost:5432/stack_grill?schema=public"
 ```
 
 > В Prisma 7 `.env` **не** загружается автоматически. Он подхватывается через
 > `import "dotenv/config"` в `prisma.config.ts` — это уже настроено.
+
+### Локальная БД через Docker
+
+В корне репозитория есть `docker-compose.yml` с PostgreSQL 17. Команды (из корня):
+
+```bash
+pnpm db:up      # поднять Postgres в фоне (docker compose up -d)
+pnpm db:logs    # смотреть логи контейнера
+pnpm db:down    # остановить и удалить контейнер (данные сохраняются в volume)
+```
+
+Дефолтные креды compose — `postgres` / `postgres`, БД `stack_grill`, порт `5432`.
+Строка `DATABASE_URL` выше подходит к ним без изменений. Переопределить можно
+через переменные `POSTGRES_USER` / `POSTGRES_PASSWORD` / `POSTGRES_DB` /
+`POSTGRES_PORT` (например, в корневом `.env` или окружении).
+
+Данные хранятся в named volume `postgres_data` и переживают `db:down`.
+Полностью стереть БД: `docker compose down -v`.
 
 ---
 
