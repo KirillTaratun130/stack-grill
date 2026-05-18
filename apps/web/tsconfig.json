@@ -9,6 +9,9 @@
     "esModuleInterop": true,
     "module": "esnext",
     "moduleResolution": "bundler",
+    // @repo/db (Prisma 7) imports its generated client with explicit .ts
+    // specifiers; the bundler emits, tsc only type-checks (noEmit).
+    "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
