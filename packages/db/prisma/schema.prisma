@@ -1,6 +1,12 @@
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
+  // Prisma 7's default emits ESM `.js` import specifiers inside the generated
+  // `.ts` files, which Next.js/webpack cannot resolve to the real `.ts`
+  // sources (prisma/prisma#28627). Emit and import `.ts` consistently.
+  moduleFormat           = "esm"
+  generatedFileExtension = "ts"
+  importFileExtension    = "ts"
 }
 
 datasource db {
